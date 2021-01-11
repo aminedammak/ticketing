@@ -38,8 +38,8 @@ userSchema.pre("save", async function (done) {
     const hashed = await Password.toHash(this.get("password"));
     this.set("password", hashed);
     //in mongoose we need to call "done" after async operation
-    done();
   }
+  done();
 });
 
 userSchema.statics.build = (attrs: UserAttrs) => {
