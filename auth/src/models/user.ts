@@ -19,16 +19,29 @@ interface UserDoc extends mongoose.Document {
   //if mongoose add extra properties like createAt, we put them here
 }
 
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
+const userSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
-  password: {
-    type: String,
-    required: true,
-  },
-});
+  {
+    /* Used to remove/edit properties from the returned User model */
+    toJSON: {
+      transform(doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.password; /* delete is a JS keyword it removes a property off of an object */
+        delete ret.__v;
+      },
+    },
+  }
+);
 
 //we use normal function so that "this" refers to the document being saved,
 //if we use arrow function then "this" will refers to the context of the current file
