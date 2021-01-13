@@ -2,12 +2,7 @@ import request from "supertest";
 import { app } from "../../app";
 
 it("respond with details about the current user", async () => {
-  const authResponse = await request(app)
-    .post("/api/users/signup")
-    .send({ email: "test@test.com", password: "1234" })
-    .expect(201);
-
-  const cookie = authResponse.get("Set-Cookie");
+  const cookie = await global.signin();
   const response = await request(app)
     .get("/api/users/currentuser")
     .set("Cookie", cookie)
