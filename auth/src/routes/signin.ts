@@ -12,6 +12,8 @@ router.post(
   "/api/users/signin",
   [
     body("email").isEmail().withMessage("Email must be valid"),
+    /* We can do not put the same validation rules as the signup 
+    because if we change the rules of the signup the old users should stay able to signin */
     body("password")
       .trim()
       .notEmpty()
