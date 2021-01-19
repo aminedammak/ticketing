@@ -13,7 +13,7 @@ const app = express();
 app.set(
   "trust proxy",
   true
-); /* To make sure that express is aware the it's behind a proxy of Ingress-nginx */
+); /* To make sure that express is aware that it's behind a proxy of Ingress-nginx */
 app.use(json());
 app.use(
   cookieSession({
