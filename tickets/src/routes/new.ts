@@ -1,10 +1,22 @@
 import express, { Request, Response } from "express";
-import { requireAuth } from "@dmk_tickets/common";
+import { body } from "express-validator";
+import { requireAuth, validateRequest } from "@dmk_tickets/common";
 
 const router = express.Router();
 
-router.post("/api/tickets", requireAuth, (req: Request, res: Response) => {
-  return res.status(201).send({});
-});
+router.post(
+  "/api/tickets",
+  requireAuth,
+  [
+    body("title").not().isEmpty().withMessage("Title is required"),
+    body("price")
+      .isFloat({ gt: 0 })
+      .withMessage("Price must be greater than 0"),
+  ],
+  validateRequest,
+  (req: Request, res: Response) => {
+    return res.status(201).send({});
+  }
+);
 
 export { router as createTicketRouter };
