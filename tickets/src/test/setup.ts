@@ -39,8 +39,17 @@ afterAll(async () => {
 
 global.signin = () => {
   //Build a JWT payload: {id, email}
+  // const payload = {
+  //   id: "54sd4f5sfs",
+  //   email: "test@test.com",
+  // };
+
+  //Here we generate the id dynamically so that each time this function is invoked we
+  // have a different signed user
+  // if we want to sign in with the same user we need to save the cookie generated for the first call
+  // and used it
   const payload = {
-    id: "54sd4f5sfs",
+    id: new mongoose.Types.ObjectId().toHexString(),
     email: "test@test.com",
   };
   //Create the JWT
