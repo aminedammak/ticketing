@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import { requireAuth, validateRequest } from "@dmk_tickets/common";
 import { Ticket } from "../models/tickets";
+import { TicketCreatedPublisher } from "../events/ticket-created-publisher";
 
 const router = express.Router();
 
@@ -22,6 +23,15 @@ router.post(
     const ticket = Ticket.build({ title, price, userId });
 
     await ticket.save();
+
+    // const publisher = new TicketCreatedPublisher(client);
+
+    // await publisher.publish({
+    //   id: ticket.id,
+    //   title: ticket.title,
+    //   price: ticket.price,
+    //   userId: ticket.userId,
+    // });
 
     return res.status(201).send(ticket);
   }
