@@ -7,6 +7,9 @@ import {
   NotFoundError,
   NotAuthorizedError,
 } from "@dmk_tickets/common";
+import { TicketUpdatedPublisher } from "../events/publisher/ticket-updated-publisher";
+import { natsWrapper } from "../nats-wrapper";
+
 const router = express.Router();
 
 router.put(
@@ -35,6 +38,15 @@ router.put(
       price: req.body.price,
     });
     await ticket.save();
+
+    const publisher = new TicketUpdatedPublisher(natsWrapper.client);
+
+    await publisher.publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
+    });
 
     res.send(ticket);
   }
