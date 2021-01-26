@@ -11,6 +11,15 @@ const start = async () => {
   }
   try {
     await natsWrapper.connect("ticketing", "sdfsdfze", "http://nats-srv:4222");
+
+    //graceful shutdown
+    natsWrapper.client.on("close", () => {
+      console.log("Client connection to NATS closed!");
+      process.exit();
+    });
+    process.on("SIGINT", () => natsWrapper.client.close());
+    process.on("SIGTERM", () => natsWrapper.client.close());
+
     await mongoose.connect(process.env.MONGO_URI, {
       /* Those options are needed to avoid some eventual errors and warnings */
       useNewUrlParser: true,
