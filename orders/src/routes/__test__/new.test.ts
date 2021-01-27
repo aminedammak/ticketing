@@ -51,3 +51,5 @@ it("reserves a ticket", async () => {
 
   //we ca write a test that make sure that inspect the DB and make sure that the ticket is reseved
 });
+
+it.todo("emits an order created event");
